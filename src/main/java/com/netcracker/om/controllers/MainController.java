@@ -21,7 +21,8 @@ public class MainController {
 
     public static void enterRoom(Character character, Room room) {
         Scanner in = new Scanner(System.in);
-        while (room.getKeys() < NUMBER_OF_KEYS) {
+        while (character.getKeys() < NUMBER_OF_KEYS) {
+            CharactersController.showKeysAmount(character);
             System.out.println("Enter room with quest? \n1. Yes\n2. No");
             int choice = in.nextInt();
             if (choice == 1) {
@@ -30,14 +31,13 @@ public class MainController {
                     System.out.println(QUEST_FAILED);
                     character = chooseCharacter();
                 } else {
-                    room.keysIncrease();
+                    character.keysIncrease();
                     room.setRoomQuest(QuestsController.getRandomQuest());
                     System.out.println(questResult);
                 }
             }
         }
     }
-
 
     public static void play() {
         QuestsController.init();

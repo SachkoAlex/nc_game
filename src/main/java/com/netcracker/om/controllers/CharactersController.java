@@ -19,4 +19,8 @@ public class CharactersController {
     public static Character getCharacterByNumber(Integer number) throws IndexOutOfBoundsException {
         return allCharacters.get(number);
     }
+
+    public static void showKeysAmount(Character character) {
+       System.out.println("Amount of keys: " + character.getKeys());
+    }
 }
