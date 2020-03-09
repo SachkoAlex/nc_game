@@ -1,27 +1,28 @@
 package com.netcracker.om.characters.charactersImpl;
 
 import com.netcracker.om.characters.Character;
+import com.netcracker.om.constants.Constants;
 
-public class Fireman implements Character {
+public class Fireman extends Character {
 
     private static int keys;
 
+    private static String skill;
+
     public Fireman() {
+        skill = Constants.FIREMAN_SKILL;
         keys = 0;
     }
 
-    @Override
-    public void keysIncrease() {
-        keys++;
-    }
-
-    @Override
     public int getKeys() {
         return keys;
     }
 
-    @Override
-    public String action() {
-        return ("Fire extinguished, congratulations!");
+    public String getSkill() {
+        return skill;
+    }
+
+    public void keysAmountIncrease() {
+        keys++;
     }
 }

@@ -1,10 +1,14 @@
 package com.netcracker.om.characters;
 
-public interface Character {
+public abstract class Character {
 
-    void keysIncrease();
+    private static int keys;
 
-    int getKeys();
+    private static String skill;
 
-    String action();
+    public abstract void keysAmountIncrease();
+
+    public abstract int getKeys();
+
+    public abstract String getSkill();
 }

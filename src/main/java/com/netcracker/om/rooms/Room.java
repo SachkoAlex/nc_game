@@ -11,11 +11,11 @@ public class Room {
         this.roomQuest = roomQuest;
     }
 
-    public void setRoomQuest(Quest roomQuest) {
-        this.roomQuest = roomQuest;
+    public Quest getRoomQuest() {
+        return roomQuest;
     }
 
-    public String checkQuestCompletion(Character character) {
-        return roomQuest.completeQuest(character);
+    public void enterRoom(Character character) {
+        roomQuest.completeQuest(character);
     }
 }

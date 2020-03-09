@@ -1,50 +1,57 @@
 package com.netcracker.om.controllers;
 
 import com.netcracker.om.characters.Character;
+import com.netcracker.om.characters.charactersImpl.Ryhor;
+import com.netcracker.om.constants.Constants;
 import com.netcracker.om.quests.Quest;
+import com.netcracker.om.quests.questImpl.RyhorQuest;
 import com.netcracker.om.rooms.Room;
 
 import java.util.Scanner;
 
 public class MainController {
 
-    private static final String QUEST_FAILED = "Wrong character, choose another";
+    private static Quest RANDOM_QUEST = QuestsController.getRandomQuest();
 
-    private static final int NUMBER_OF_KEYS = 2;
+    private MainController() {
+    }
+
+    public static void printLine(String line) {
+        System.out.println(line);
+    }
+
+    public static Scanner getScanner() {
+        return new Scanner(System.in);
+    }
 
     public static Character chooseCharacter() {
-        System.out.println("Choose your character\n1. Ryhor\n2. Policeman\n3. Fireman");
-        Scanner in = new Scanner(System.in);
+        printLine(Constants.CHOOSING_CHARACTER_REQUEST);
+        Scanner in = getScanner();
         int charactersNumber = in.nextInt();
         return CharactersController.getCharacterByNumber(charactersNumber);
     }
 
-    public static void enterRoom(Character character, Room room) {
-        Scanner in = new Scanner(System.in);
-        while (character.getKeys() < NUMBER_OF_KEYS) {
-            CharactersController.showKeysAmount(character);
-            System.out.println("Enter room with quest? \n1. Yes\n2. No");
-            int choice = in.nextInt();
-            if (choice == 1) {
-                String questResult = room.checkQuestCompletion(character);
-                if (QUEST_FAILED.equals(questResult)) {
-                    System.out.println(QUEST_FAILED);
-                    character = chooseCharacter();
-                } else {
-                    character.keysIncrease();
-                    room.setRoomQuest(QuestsController.getRandomQuest());
-                    System.out.println(questResult);
-                }
-            }
+    public static Room moveAnotherRoom(Character character) {
+        if (QuestsController.checkQuestCompletion(RANDOM_QUEST)) {
+            character.keysAmountIncrease();
+            RANDOM_QUEST = QuestsController.getRandomQuest();
+            return new Room(RANDOM_QUEST);
         }
+        return new Room(RANDOM_QUEST);
     }
 
     public static void play() {
-        QuestsController.init();
-        CharactersController.setAllCharacters();
+        Room room = new Room(RANDOM_QUEST);
         Character character = chooseCharacter();
-        Quest randomQuest = QuestsController.getRandomQuest();
-        Room room = new Room(randomQuest);
-        enterRoom(character, room);
+        int choice;
+        while (character.getKeys() < Constants.NUMBER_OF_KEYS) {
+            printLine(Constants.GET_KEYS_AMOUNT_REQUEST + character.getKeys());
+            printLine(Constants.ENTER_ROOM_REQUEST);
+            choice = getScanner().nextInt();
+            if (choice == Constants.AGREEMENT) {
+                room.enterRoom(character);
+            }
+            room = moveAnotherRoom(character);
+        }
     }
 }

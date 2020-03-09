@@ -1,27 +1,28 @@
 package com.netcracker.om.characters.charactersImpl;
 
 import com.netcracker.om.characters.Character;
+import com.netcracker.om.constants.Constants;
 
-public class Ryhor implements Character {
+public class Ryhor extends Character {
 
     private static int keys;
 
+    private static String skill;
+
     public Ryhor() {
+        skill = Constants.RYHOR_SKILL;
         keys = 0;
     }
 
-    @Override
-    public void keysIncrease() {
-        keys++;
-    }
-
-    @Override
     public int getKeys() {
         return keys;
     }
 
-    @Override
-    public String action() {
-        return ("Кс-кс-кс");
+    public String getSkill() {
+        return skill;
+    }
+
+    public void keysAmountIncrease() {
+        keys++;
     }
 }

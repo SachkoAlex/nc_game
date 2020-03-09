@@ -1,14 +1,34 @@
 package com.netcracker.om.quests.questImpl;
 
 import com.netcracker.om.characters.Character;
-import com.netcracker.om.characters.charactersImpl.Ryhor;
+import com.netcracker.om.constants.Constants;
 import com.netcracker.om.quests.Quest;
 
-public class RyhorQuest implements Quest {
+public class RyhorQuest extends Quest {
+
+    private boolean achievement = false;
+
+    private static String requiredSkill;
+
+    public RyhorQuest() {
+        requiredSkill = Constants.RYHOR_SKILL;
+    }
+
+    public String getRequiredSkill() {
+        return requiredSkill;
+    }
+
     @Override
-    public String completeQuest(Character character) {
-        if (character.getClass() == Ryhor.class) {
-            return character.action();
-        } else return "Wrong character, choose another";
+    public boolean isAchievement() {
+        return achievement;
+    }
+
+    @Override
+    public void setAchievement(boolean completionResult) {
+        achievement = completionResult;
+    }
+
+    public void completeQuest(Character character) {
+        setAchievement(requiredSkill.equals(character.getSkill()));
     }
 }

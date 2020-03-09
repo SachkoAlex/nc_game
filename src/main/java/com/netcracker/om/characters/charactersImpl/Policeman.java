@@ -1,27 +1,27 @@
 package com.netcracker.om.characters.charactersImpl;
 
 import com.netcracker.om.characters.Character;
+import com.netcracker.om.constants.Constants;
 
-public class Policeman implements Character {
-
+public class Policeman extends Character {
     private static int keys;
 
+    private static String skill;
+
     public Policeman() {
+        skill = Constants.POLICEMAN_SKILL;
         keys = 0;
     }
 
-    @Override
-    public void keysIncrease() {
-        keys++;
+    public String getSkill() {
+        return skill;
     }
 
-    @Override
     public int getKeys() {
         return keys;
     }
 
-    @Override
-    public String action() {
-        return ("You're arrested!");
+    public void keysAmountIncrease() {
+        keys++;
     }
 }
