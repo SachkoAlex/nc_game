@@ -1,10 +1,8 @@
 package com.netcracker.om.controllers;
 
 import com.netcracker.om.characters.Character;
-import com.netcracker.om.characters.charactersImpl.Ryhor;
 import com.netcracker.om.constants.Constants;
 import com.netcracker.om.quests.Quest;
-import com.netcracker.om.quests.questImpl.RyhorQuest;
 import com.netcracker.om.rooms.Room;
 
 import java.util.Scanner;
@@ -13,7 +11,15 @@ public class MainController {
 
     private static Quest RANDOM_QUEST = QuestsController.getRandomQuest();
 
+    private static Character CHARACTER = chooseCharacter();
+
+    private static int numberOfCompletedQuests = Constants.ZERO_VALUE;
+
     private MainController() {
+    }
+
+    public static void increaseNumberOfCompletedQuests() {
+        numberOfCompletedQuests++;
     }
 
     public static void printLine(String line) {
@@ -31,27 +37,34 @@ public class MainController {
         return CharactersController.getCharacterByNumber(charactersNumber);
     }
 
-    public static Room moveAnotherRoom(Character character) {
+    public static Room moveAnotherRoom() {
         if (QuestsController.checkQuestCompletion(RANDOM_QUEST)) {
-            character.keysAmountIncrease();
+            printLine(Constants.QUEST_COMPLETION);
+            increaseNumberOfCompletedQuests();
             RANDOM_QUEST = QuestsController.getRandomQuest();
             return new Room(RANDOM_QUEST);
         }
+        printLine(Constants.WRONG_CHARACTER_RESPONSE);
+        CHARACTER = chooseCharacter();
         return new Room(RANDOM_QUEST);
     }
 
     public static void play() {
         Room room = new Room(RANDOM_QUEST);
-        Character character = chooseCharacter();
         int choice;
-        while (character.getKeys() < Constants.NUMBER_OF_KEYS) {
-            printLine(Constants.GET_KEYS_AMOUNT_REQUEST + character.getKeys());
+        while (numberOfCompletedQuests < Constants.NUMBER_OF_QUESTS_FOR_VICTORY) {
+            printLine(Constants.GET_COMPLETED_QUESTS_AMOUNT_REQUEST + numberOfCompletedQuests);
+            printLine(Constants.QUEST_NAME_PREFIX + RoomsController.getRoomDescription(room));
             printLine(Constants.ENTER_ROOM_REQUEST);
             choice = getScanner().nextInt();
             if (choice == Constants.AGREEMENT) {
-                room.enterRoom(character);
+                room.enterRoom(CHARACTER);
             }
-            room = moveAnotherRoom(character);
+            if (choice == Constants.NUMBER_OF_CHARACTER_CHOICES) {
+                CHARACTER = chooseCharacter();
+                room.enterRoom(CHARACTER);
+            }
+            room = moveAnotherRoom();
         }
     }
 }

@@ -7,6 +7,8 @@ public class Room {
 
     private Quest roomQuest;
 
+    private String roomDescription;
+
     public Room(Quest roomQuest) {
         this.roomQuest = roomQuest;
     }
